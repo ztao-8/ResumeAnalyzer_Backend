@@ -13,8 +13,7 @@ public class Resume {
 
     private String fileName;
 
-    @Lob
-    private byte[] data;
+    private String filePath;
 
     public Long getId() {
         return id;
@@ -28,8 +27,8 @@ public class Resume {
         return fileName;
     }
 
-    public byte[] getData() {
-        return data;
+    public String getFilePath() {
+        return filePath;
     }
 
     public void setId(Long id) {
@@ -44,7 +43,7 @@ public class Resume {
         this.fileName = fileName;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
