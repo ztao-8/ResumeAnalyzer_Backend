@@ -11,8 +11,6 @@ public class Resume {
 
     private Long userId;
 
-    private String fileName;
-
     private String filePath;
 
     public Long getId() {
@@ -21,10 +19,6 @@ public class Resume {
 
     public Long getUserId() {
         return userId;
-    }
-
-    public String getFileName() {
-        return fileName;
     }
 
     public String getFilePath() {
@@ -37,10 +31,6 @@ public class Resume {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     public void setFilePath(String filePath) {

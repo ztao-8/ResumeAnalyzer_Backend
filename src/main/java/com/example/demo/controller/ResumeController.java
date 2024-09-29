@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Resume;
+import com.example.demo.repository.ResumeRepository;
 import com.example.demo.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -52,5 +53,11 @@ public class ResumeController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateResume(@PathVariable Long userId, @RequestParam("file") MultipartFile file) throws IOException {
+        Optional<Resume> updatedResume = resumeService.updateResume(userId, file);
+        return updatedResume.isPresent() ? ResponseEntity.ok(updatedResume.get()) : ResponseEntity.notFound().build();
     }
 }
