@@ -3,11 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.Resume;
 import com.example.demo.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +26,7 @@ public class ResumeController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadResume(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
+    public ResponseEntity<?> uploadResume(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) throws IOException {
         Resume uploadedResume = resumeService.saveResume(file, userId);
         return ResponseEntity.ok("Resume uploaded successfully");
     }
@@ -32,15 +36,21 @@ public class ResumeController {
         Optional<Resume> resume = resumeService.getById(id);
         if (resume.isPresent()) {
             Resume resumeUploaded = resume.get();
-            byte[] pdfData = resumeUploaded.getData(); // Assuming the PDF is stored as binary data (byte[])
+            try {
+//                Path filePath = Paths.get(resumeUploaded.getFilePath());
+                File file = new File(resumeUploaded.getFilePath());
 
-            // Set content type and headers for the response
-            return ResponseEntity.ok()
-                    .header("Content-Disposition", "inline; filename=\"" + resumeUploaded.getFileName() + "\"") // This tells the browser to display it inline
-                    .contentType(MediaType.APPLICATION_PDF) // Set MIME type as PDF
-                    .body(pdfData); // Return the PDF binary content
+                FileSystemResource resource = new FileSystemResource(file);
+                String contentType = Files.probeContentType(file.toPath());
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .body(resource);
+            } catch (Exception e) {
+                throw new RuntimeException("Error while serving the file", e);
+            }
         } else {
-            return ResponseEntity.notFound().build(); // Handle case where resume is not found
+            return ResponseEntity.notFound().build();
         }
     }
 }
