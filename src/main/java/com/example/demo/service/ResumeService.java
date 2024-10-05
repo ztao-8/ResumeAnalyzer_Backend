@@ -40,8 +40,8 @@ public class ResumeService {
         return resumeRepository.save(resume);
     }
 
-    public Optional<Resume> getById(Long id) {
-        return resumeRepository.findById(id);
+    public Optional<Resume> getByUserId(Long userId) {
+        return resumeRepository.findByUserId(userId);
     }
 
     public Optional<Resume> updateResume(Long userId, MultipartFile file) throws IOException {

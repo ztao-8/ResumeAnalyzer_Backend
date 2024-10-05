@@ -32,9 +32,9 @@ public class ResumeController {
         return ResponseEntity.ok("Resume uploaded successfully");
     }
 
-    @GetMapping("/pdf/{id}")
-    public ResponseEntity<?> getResume(@PathVariable("id") Long id) {
-        Optional<Resume> resume = resumeService.getById(id);
+    @GetMapping("/pdf/{userId}")
+    public ResponseEntity<?> getResume(@PathVariable("userId") Long userId) {
+        Optional<Resume> resume = resumeService.getByUserId(userId);
         if (resume.isPresent()) {
             Resume resumeUploaded = resume.get();
             try {
@@ -54,7 +54,7 @@ public class ResumeController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{userId}")
     public ResponseEntity<?> updateResume(@PathVariable Long userId, @RequestParam("file") MultipartFile file) throws IOException {
         Optional<Resume> updatedResume = resumeService.updateResume(userId, file);
         return updatedResume.isPresent() ? ResponseEntity.ok(updatedResume.get()) : ResponseEntity.notFound().build();
