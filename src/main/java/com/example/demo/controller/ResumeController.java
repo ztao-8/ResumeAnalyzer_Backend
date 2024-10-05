@@ -38,7 +38,6 @@ public class ResumeController {
         if (resume.isPresent()) {
             Resume resumeUploaded = resume.get();
             try {
-//                Path filePath = Paths.get(resumeUploaded.getFilePath());
                 File file = new File(resumeUploaded.getFilePath());
 
                 FileSystemResource resource = new FileSystemResource(file);

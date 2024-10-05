@@ -13,6 +13,15 @@ public class Resume {
 
     private String filePath;
 
+    public Resume(Long userId, String filePath) {
+        this.userId = userId;
+        this.filePath = filePath;
+    }
+
+    // Default constructor (needed by JPA)
+    public Resume() {
+    }
+
     public Long getId() {
         return id;
     }
