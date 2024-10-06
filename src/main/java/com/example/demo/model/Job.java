@@ -1,15 +1,21 @@
 package com.example.demo.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "job_id")
     private Long id;
+
+    @Column(name = "job_title", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Software Engineer Intern'")
     private String title;
+
+    @Column(name = "company", nullable = false)
     private String company;
+
+    @Column(name = "job_url", nullable = true)
     private String url;
 
     public Job(){
