@@ -11,21 +11,6 @@ import java.io.IOException;
 @Service
 public class PdfParseService {
 
-//    public String parsePdf(String filePath) throws IOException {
-//        File pdfFile = new File(filePath);
-//
-//        // Load PDF document
-//        PDDocument document = PDDocument.load(pdfFile);
-//
-//        // Extract text from the document
-//        PDFTextStripper pdfStripper = new PDFTextStripper();
-//        String parsedText = pdfStripper.getText(document);
-//
-//        // Close the document
-//        document.close();
-//
-//        return parsedText;
-//    }
     public String parsePdf(byte[] pdfBytes) throws IOException {
         // Load PDF document directly from the file input stream
         try (PDDocument document = PDDocument.load(pdfBytes)) {
