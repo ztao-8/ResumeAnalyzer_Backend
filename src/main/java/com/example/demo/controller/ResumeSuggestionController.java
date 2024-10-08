@@ -5,7 +5,9 @@ import com.example.demo.service.ResumeSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +40,15 @@ public class ResumeSuggestionController {
 
         return updatedSuggestion.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/analyze")
+    public ResponseEntity<?> analyzeResume(@RequestParam("file") MultipartFile file,
+                                           @RequestParam("jobDescription") String jobDescription) throws IOException {
+        // Generate resume suggestions and section summaries
+        String suggestions = resumeSuggestionService.generateSuggestion(file, jobDescription);
+
+        return ResponseEntity.ok(suggestions);
     }
 
 }
