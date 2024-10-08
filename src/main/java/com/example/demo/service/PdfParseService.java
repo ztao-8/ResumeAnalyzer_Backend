@@ -26,9 +26,9 @@ public class PdfParseService {
 //
 //        return parsedText;
 //    }
-    public String parsePdf(MultipartFile file) throws IOException {
+    public String parsePdf(byte[] pdfBytes) throws IOException {
         // Load PDF document directly from the file input stream
-        try (PDDocument document = PDDocument.load(file.getInputStream())) {
+        try (PDDocument document = PDDocument.load(pdfBytes)) {
             // Extract text from the document
             PDFTextStripper pdfStripper = new PDFTextStripper();
             return pdfStripper.getText(document);

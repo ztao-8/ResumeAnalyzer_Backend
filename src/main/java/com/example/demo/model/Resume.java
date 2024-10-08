@@ -11,11 +11,23 @@ public class Resume {
 
     private Long userId;
 
-    private String filePath;
+    // Map this field to the 'fileName' column
+    private String fileName;
 
-    public Resume(Long userId, String filePath) {
+    // Map this field to the 'fileType' column
+    private String fileType;
+
+    @Lob
+//    @Column(name = "fileData")
+    @Column(columnDefinition = "longblob")// Map this field to the 'fileData' column
+    private byte[] fileData;  // Store the PDF as binary data
+
+
+    public Resume(Long userId, String fileName, String fileType, byte[] fileData) {
         this.userId = userId;
-        this.filePath = filePath;
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileData = fileData;
     }
 
     // Default constructor (needed by JPA)
@@ -30,10 +42,6 @@ public class Resume {
         return userId;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -42,7 +50,18 @@ public class Resume {
         this.userId = userId;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public byte[] getFileData() {
+        return fileData;
+    }
+    public void setFileData(byte[] fileData) {
+        this.fileData = fileData;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

@@ -24,27 +24,10 @@ public class ResumeService {
     }
 
     public Resume saveResume(MultipartFile file, Long userId) throws IOException {
-        String fileName = userId + "_" + file.getOriginalFilename();
-        File uploadPath = new File(uploadDir);
-
-        // Create the directory if it doesn't exist
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs();
-        }
-
-        String filePath = uploadDir + File.separator + fileName;
-
-        // Check if a resume already exists with the same path
-        Optional<Resume> existingResume = resumeRepository.findByUserId(userId);
-        if (existingResume.isPresent() && existingResume.get().getFilePath().equals(filePath)) {
-            // Generate a new file name by appending a UUID to avoid conflict
-            String uniqueFileName = userId + "_" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            filePath = uploadDir + File.separator + uniqueFileName;
-        }
-
-        File localFile = new File(filePath);
-        file.transferTo(localFile);  // Save the file on the file system
-        Resume resume = new Resume(userId, filePath);
+        String fileName = file.getOriginalFilename();
+        String fileType = file.getContentType();
+        byte[] fileData = file.getBytes();
+        Resume resume = new Resume(userId,fileName,fileType,fileData);
         // Save the resume in the database
         return resumeRepository.save(resume);
     }
@@ -57,12 +40,8 @@ public class ResumeService {
         Optional<Resume> existingResume = resumeRepository.findByUserId(userId);
         if (existingResume.isPresent()) {
             Resume resume = existingResume.get();
-            String fileName = userId + "_" + file.getOriginalFilename();
-            String filePath = uploadDir + File.separator + fileName;
-
-            File localFile  = new File(filePath);
-            file.transferTo(localFile);  // Overwrite the existing file
-            resume.setFilePath(filePath);
+            byte[] newFileData = file.getBytes();
+            resume.setFileData(newFileData);
             return Optional.of(resumeRepository.save(resume));
         }
         return Optional.empty();

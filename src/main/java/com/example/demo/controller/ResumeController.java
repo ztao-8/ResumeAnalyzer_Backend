@@ -1,18 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Resume;
-import com.example.demo.repository.ResumeRepository;
 import com.example.demo.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Optional;
 
 @RestController
@@ -30,7 +26,7 @@ public class ResumeController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadResume(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) throws IOException {
         Resume uploadedResume = resumeService.saveResume(file, userId);
-        return ResponseEntity.ok("Resume uploaded successfully");
+        return ResponseEntity.ok("Resume uploaded with ID: " + uploadedResume.getId());
     }
 
     @GetMapping("/pdf/{userId}")
@@ -39,14 +35,14 @@ public class ResumeController {
         if (resume.isPresent()) {
             Resume resumeUploaded = resume.get();
             try {
-                File file = new File(resumeUploaded.getFilePath());
+                // Get the binary PDF data from the fileData column
+                byte[] pdfData = resumeUploaded.getFileData();
 
-                FileSystemResource resource = new FileSystemResource(file);
-                String contentType = Files.probeContentType(file.toPath());
-
+                // Return the PDF as a byte array
                 return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(contentType))
-                        .body(resource);
+                        .contentType(MediaType.parseMediaType(resumeUploaded.getFileType())) // e.g., "application/pdf"
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resumeUploaded.getFileName() + "\"")
+                        .body(pdfData);  // Return binary data
             } catch (Exception e) {
                 throw new RuntimeException("Error while serving the file", e);
             }

@@ -47,9 +47,9 @@ public class ResumeSuggestionService {
         return resumeSuggestionRepository.findByResumeId(resumeId);
     }
 
-    public String generateSuggestion(MultipartFile file, String jobDescription) throws IOException {
+    public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
         // Step 1: Parse the resume PDF to extract text
-        String resumeText = pdfParseService.parsePdf(file);
+        String resumeText = pdfParseService.parsePdf(fileData);
 
         // Step 2: Extract relevant sections
         String educationSection = sectionExtractor.extractEducationSection(resumeText);
