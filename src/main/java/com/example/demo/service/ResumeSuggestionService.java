@@ -64,8 +64,8 @@ public class ResumeSuggestionService {
 //        String strengthsAndWeaknesses = resumeAnalysisService.analyzeStrengthsAndWeaknesses(resumeText);
 
         // Return all suggestions and summaries
-        return "Education Summary:\n" + educationSection + "\n\n"
-                + "Work Experience Summary:\n" +workExperienceSection + "\n\n"
-                + "Project Summary:\n" + projectSection + "\n\n";
+        return educationSection + "\n\n"
+                + workExperienceSection + "\n\n"
+                +  projectSection + "\n\n";
     }
 }
