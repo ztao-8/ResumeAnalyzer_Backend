@@ -2,6 +2,7 @@ package com.example.demo.service;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
+import dev.langchain4j.model.input.structured.StructuredPrompt;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 
 public class ResumeAnalysisService{
@@ -13,7 +14,7 @@ public class ResumeAnalysisService{
     }
 
     public String extractEducationSection(String resumeText){
-        return extractSection("Extract the education information", resumeText);
+        return extractSection("Extract the education section", resumeText);
     }
 
     public String extractWorkSection(String resumeText){
