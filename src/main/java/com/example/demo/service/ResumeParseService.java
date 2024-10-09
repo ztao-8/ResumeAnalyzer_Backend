@@ -1,15 +1,12 @@
 package com.example.demo.service;
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.input.PromptTemplate;
-import dev.langchain4j.model.input.structured.StructuredPrompt;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 
-public class ResumeAnalysisService{
+public class ResumeParseService {
 
     private final OpenAiChatModel model;
 
-    public ResumeAnalysisService(OpenAiChatModel model) {
+    public ResumeParseService(OpenAiChatModel model) {
         this.model = model;
     }
 
