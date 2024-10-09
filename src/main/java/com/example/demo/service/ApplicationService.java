@@ -34,7 +34,7 @@ public class ApplicationService {
             return Optional.of(application);  // Return the updated application
         }
 
-        return Optional.empty();  // If application doesn't exist, return empty
+        return Optional.empty();
     }
 
 

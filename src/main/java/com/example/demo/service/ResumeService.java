@@ -28,7 +28,6 @@ public class ResumeService {
         String fileType = file.getContentType();
         byte[] fileData = file.getBytes();
         Resume resume = new Resume(userId,fileName,fileType,fileData);
-        // Save the resume in the database
         return resumeRepository.save(resume);
     }
 

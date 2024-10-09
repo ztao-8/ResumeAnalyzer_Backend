@@ -52,7 +52,6 @@ public class ResumeSuggestionController {
         Optional<Resume> resumeOpt = resumeService.getByUserId(userId);
         if (resumeOpt.isPresent()) {
             Resume resume = resumeOpt.get();
-            // Directly use the fileData byte array
             byte[] fileData = resume.getFileData();
             // Generate and store suggestions
             try {

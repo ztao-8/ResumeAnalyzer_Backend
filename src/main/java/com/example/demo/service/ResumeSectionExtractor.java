@@ -4,10 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ResumeSectionExtractor {
-
-    // Common method to extract sections based on headers and next section delimiter
     private String extractSection(String resumeText, String sectionHeaderPattern, String nextSectionHeaderPattern) {
-        // Modify the pattern to capture content on the same line as the section header
+
         String finalPattern = "(?i)(" + sectionHeaderPattern + ")([^\n]*\n+)(.*?)(?=(\\n\\s*\\n|(?i)" + nextSectionHeaderPattern + "|$))";
         Pattern pattern = Pattern.compile(finalPattern, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(resumeText);

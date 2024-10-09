@@ -13,6 +13,7 @@ public class ResumeAnalysisService{
         this.model = model;
     }
 
+
     public String extractEducationSection(String resumeText){
         return extractSection("Extract the education section", resumeText);
     }

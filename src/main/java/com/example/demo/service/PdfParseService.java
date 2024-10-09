@@ -14,7 +14,6 @@ public class PdfParseService {
     public String parsePdf(byte[] pdfBytes) throws IOException {
         // Load PDF document directly from the file input stream
         try (PDDocument document = PDDocument.load(pdfBytes)) {
-            // Extract text from the document
             PDFTextStripper pdfStripper = new PDFTextStripper();
             return pdfStripper.getText(document);
         }

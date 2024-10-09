@@ -26,7 +26,7 @@ public class ResumeSuggestionService {
         this.pdfParseService = pdfParseService;
         this.sectionExtractor = new ResumeSectionExtractor();
         this.resumeAnalysisService = new ResumeAnalysisService(OpenAiChatModel.builder()
-                .apiKey("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")  // Use your actual OpenAI API key here
+                .apiKey("your_key")  // Use your actual OpenAI API key here
                 .build());
     }
 
@@ -76,14 +76,10 @@ public class ResumeSuggestionService {
         return new ResumeSection(educationSection, workExperienceSection, projectSection, skillSection);
     }
 
-    public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
+//    public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
         // Step 1: Parse the resume PDF to extract text
-        String resumeText = pdfParseService.parsePdf(fileData);
-
-        // Step 2: Extract relevant sections
-        String educationSection = sectionExtractor.extractEducationSection(resumeText);
-        String workExperienceSection = sectionExtractor.extractWorkExperienceSection(resumeText);
-        String projectSection = sectionExtractor.extractProjectSection(resumeText);
+//        String resumeText = pdfParseService.parsePdf(fileData);
+//
 
         // Step 3: Summarize sections and analyze the full resume using LangChain4j
 //        String educationSummary = resumeAnalysisService.summarizeSection("Education", educationSection);
@@ -93,8 +89,6 @@ public class ResumeSuggestionService {
 //        String strengthsAndWeaknesses = resumeAnalysisService.analyzeStrengthsAndWeaknesses(resumeText);
 
         // Return all suggestions and summaries
-        return educationSection + "\n\n"
-                + workExperienceSection + "\n\n"
-                +  projectSection + "\n\n";
-    }
+
+//    }
 }

@@ -18,10 +18,8 @@ public class Resume {
     private String fileType;
 
     @Lob
-//    @Column(name = "fileData")
     @Column(columnDefinition = "longblob")// Map this field to the 'fileData' column
     private byte[] fileData;  // Store the PDF as binary data
-
 
     public Resume(Long userId, String fileName, String fileType, byte[] fileData) {
         this.userId = userId;

@@ -37,8 +37,6 @@ public class ResumeController {
             try {
                 // Get the binary PDF data from the fileData column
                 byte[] pdfData = resumeUploaded.getFileData();
-
-                // Return the PDF as a byte array
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(resumeUploaded.getFileType())) // e.g., "application/pdf"
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resumeUploaded.getFileName() + "\"")

@@ -12,7 +12,6 @@ public class ResumeSection {
         this.skills = skills;
         this.projects = projects;
     }
-    // Getters and Setters
 
     public String getEducation() { return education; }
     public String getWorkExperience() { return workExperience; }
