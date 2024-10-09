@@ -13,20 +13,18 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
 @Service
 public class ResumeSuggestionService {
     @Autowired
     private ResumeSuggestionRepository resumeSuggestionRepository;
+
     private PdfParseService pdfParseService;
     private ResumeSectionExtractor sectionExtractor;
     private ResumeParser resumeParser;
     private ResumeAnalysis resumeAnalysis;
-    @Value("${openai.api.key}")
-    private String openAiApiKey;
 
     @Autowired
-    public ResumeSuggestionService(PdfParseService pdfParseService) {
+    public ResumeSuggestionService(PdfParseService pdfParseService, @Value("${openai.api.key}") String openAiApiKey) {
         this.pdfParseService = pdfParseService;
         this.sectionExtractor = new ResumeSectionExtractor();
         OpenAiChatModel model = OpenAiChatModel.builder()

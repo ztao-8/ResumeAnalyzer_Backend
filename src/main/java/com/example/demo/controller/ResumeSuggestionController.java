@@ -87,7 +87,6 @@ public class ResumeSuggestionController {
     }
 
     @PostMapping("/analysis/{userId}")
-    //input contain jobDescription
     public ResponseEntity<?> analyzeAIResume(@PathVariable Long userId, @RequestParam String jobDescription) {
         Optional<Resume> resumeOpt = resumeService.getByUserId(userId);
         if (resumeOpt.isPresent()) {
