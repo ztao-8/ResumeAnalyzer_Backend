@@ -3,31 +3,37 @@ package com.example.demo.service;
 import com.example.demo.model.ResumeSection;
 import com.example.demo.model.ResumeSuggestion;
 import com.example.demo.repository.ResumeSuggestionRepository;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Component
 @Service
 public class ResumeSuggestionService {
     @Autowired
     private ResumeSuggestionRepository resumeSuggestionRepository;
-
     private PdfParseService pdfParseService;
     private ResumeSectionExtractor sectionExtractor;
-    private ResumeAnalysisService resumeAnalysisService;
+    private ResumeParser resumeParser;
+    private ResumeAnalysis resumeAnalysis;
+    @Value("${openai.api.key}")
+    private String openAiApiKey;
 
     @Autowired
     public ResumeSuggestionService(PdfParseService pdfParseService) {
         this.pdfParseService = pdfParseService;
         this.sectionExtractor = new ResumeSectionExtractor();
-        this.resumeAnalysisService = new ResumeAnalysisService(OpenAiChatModel.builder()
-                .apiKey("your_key")  // Use your actual OpenAI API key here
-                .build());
+        OpenAiChatModel model = OpenAiChatModel.builder()
+                .apiKey(openAiApiKey)
+                .build();
+        this.resumeParser = new ResumeParser(model);
+        this.resumeAnalysis = new ResumeAnalysis(model);
     }
 
 
@@ -69,26 +75,15 @@ public class ResumeSuggestionService {
         String resumeText = pdfParseService.parsePdf(fileData);
 
         // Step 2: Extract relevant sections
-        String educationSection = resumeAnalysisService.extractEducationSection(resumeText);
-        String workExperienceSection = resumeAnalysisService.extractWorkSection(resumeText);
-        String projectSection = resumeAnalysisService.extractProjectSection(resumeText);
-        String skillSection = resumeAnalysisService.extractSkillSection(resumeText);
+        String educationSection = resumeParser.extractEducationSection(resumeText);
+        String workExperienceSection = resumeParser.extractWorkSection(resumeText);
+        String projectSection = resumeParser.extractProjectSection(resumeText);
+        String skillSection = resumeParser.extractSkillSection(resumeText);
         return new ResumeSection(educationSection, workExperienceSection, projectSection, skillSection);
     }
 
-//    public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
-        // Step 1: Parse the resume PDF to extract text
-//        String resumeText = pdfParseService.parsePdf(fileData);
-//
-
-        // Step 3: Summarize sections and analyze the full resume using LangChain4j
-//        String educationSummary = resumeAnalysisService.summarizeSection("Education", educationSection);
-//        String workExperienceSummary = resumeAnalysisService.summarizeSection("Work Experience", workExperienceSection);
-//        String projectSummary = resumeAnalysisService.summarizeSection("Projects", projectSection);
-//
-//        String strengthsAndWeaknesses = resumeAnalysisService.analyzeStrengthsAndWeaknesses(resumeText);
-
-        // Return all suggestions and summaries
-
-//    }
+    public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
+        String resumeText = pdfParseService.parsePdf(fileData);
+        return resumeAnalysis.ResumeAnalysisWithJob(resumeText, jobDescription);
+    }
 }

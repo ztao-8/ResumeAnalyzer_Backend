@@ -2,14 +2,13 @@ package com.example.demo.service;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 
-public class ResumeParseService {
+public class ResumeParser {
 
     private final OpenAiChatModel model;
 
-    public ResumeParseService(OpenAiChatModel model) {
+    public ResumeParser(OpenAiChatModel model) {
         this.model = model;
     }
-
 
     public String extractEducationSection(String resumeText){
         return extractSection("Extract the education section", resumeText);

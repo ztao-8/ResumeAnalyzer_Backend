@@ -86,5 +86,24 @@ public class ResumeSuggestionController {
         }
     }
 
+    @PostMapping("/analysis/{userId}")
+    //input contain jobDescription
+    public ResponseEntity<?> analyzeAIResume(@PathVariable Long userId, @RequestParam String jobDescription) {
+        Optional<Resume> resumeOpt = resumeService.getByUserId(userId);
+        if (resumeOpt.isPresent()) {
+            Resume resume = resumeOpt.get();
+            byte[] fileData = resume.getFileData();
+            try {
+                String suggestion = resumeSuggestionService.generateSuggestion(fileData,jobDescription);
+                return ResponseEntity.ok(suggestion);
+            } catch (IOException e) {
+                // Handle the IOException by returning an INTERNAL_SERVER_ERROR response
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error occurred while analzing the resume.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resume not found");
+        }
+    }
 
 }
