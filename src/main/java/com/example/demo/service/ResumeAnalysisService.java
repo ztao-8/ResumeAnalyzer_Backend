@@ -32,7 +32,6 @@ public class ResumeAnalysisService{
     private String extractSection(String instruction, String resumeText) {
         String promptText = instruction + ": " + resumeText;
         Prompt prompt = Prompt.from(promptText);
-        // Use the OpenAI model to extract the content based on the prompt
         return model.generate(prompt.text());
     }
 

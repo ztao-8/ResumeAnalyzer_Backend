@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Resume;
+import com.example.demo.model.ResumeSection;
 import com.example.demo.model.ResumeSuggestion;
 import com.example.demo.service.ResumeService;
 import com.example.demo.service.ResumeSuggestionService;
@@ -47,7 +48,7 @@ public class ResumeSuggestionController {
     }
 
     @PostMapping("/parse/{userId}")
-    public ResponseEntity<String> analyzeResume(@PathVariable Long userId) {
+    public ResponseEntity<String> parseResume(@PathVariable Long userId) {
         Optional<Resume> resumeOpt = resumeService.getByUserId(userId);
         if (resumeOpt.isPresent()) {
             Resume resume = resumeOpt.get();
@@ -66,7 +67,7 @@ public class ResumeSuggestionController {
     }
 
     @PostMapping("/parseAI/{userId}")
-    public ResponseEntity<String> analyzeAIResume(@PathVariable Long userId) {
+    public ResponseEntity<?> parseAIResume(@PathVariable Long userId) {
         Optional<Resume> resumeOpt = resumeService.getByUserId(userId);
         if (resumeOpt.isPresent()) {
             Resume resume = resumeOpt.get();
@@ -74,10 +75,12 @@ public class ResumeSuggestionController {
             byte[] fileData = resume.getFileData();
             // Generate and store suggestions
             try {
-                String parsedResume = resumeSuggestionService.generateAIParsedResume(fileData);
-                return ResponseEntity.ok("Parse complete. Resume: " + parsedResume);
+                ResumeSection parsedResume = resumeSuggestionService.generateAIParsedResume(fileData);
+                return ResponseEntity.ok(parsedResume);
             } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error analyzing resume");
+                // Handle the IOException by returning an INTERNAL_SERVER_ERROR response
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error occurred while parsing the resume.");
             }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resume not found");

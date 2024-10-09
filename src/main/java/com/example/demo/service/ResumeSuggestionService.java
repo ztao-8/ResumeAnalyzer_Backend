@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.ResumeSection;
 import com.example.demo.model.ResumeSuggestion;
 import com.example.demo.repository.ResumeSuggestionRepository;
 import dev.langchain4j.model.openai.OpenAiChatModel;
@@ -64,16 +65,15 @@ public class ResumeSuggestionService {
                 +  projectSection + "\n\n";
     }
 
-    public String generateAIParsedResume(byte[] fileData) throws IOException {
+    public ResumeSection generateAIParsedResume(byte[] fileData) throws IOException {
         String resumeText = pdfParseService.parsePdf(fileData);
 
         // Step 2: Extract relevant sections
         String educationSection = resumeAnalysisService.extractEducationSection(resumeText);
         String workExperienceSection = resumeAnalysisService.extractWorkSection(resumeText);
         String projectSection = resumeAnalysisService.extractProjectSection(resumeText);
-        return educationSection + "\n\n"
-                + workExperienceSection + "\n\n"
-                +  projectSection + "\n\n";
+        String skillSection = resumeAnalysisService.extractSkillSection(resumeText);
+        return new ResumeSection(educationSection, workExperienceSection, projectSection, skillSection);
     }
 
     public String generateSuggestion(byte[] fileData, String jobDescription) throws IOException {
