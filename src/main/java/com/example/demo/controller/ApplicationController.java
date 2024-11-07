@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,10 +24,16 @@ public class ApplicationController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Application>>  getApplication(@PathVariable Long userId) {
-        List<Application> userApplication = applicationService.getAllByUserId(userId);
+    public ResponseEntity<List<Map<String,String>>>  getApplication(@PathVariable Long userId) {
+        List<Map<String,String>> userApplication = applicationService.getAllByUserId(userId);
         return ResponseEntity.ok(userApplication);
     }
+
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<List<Application>>  getApplication(@PathVariable Long userId) {
+//        List<Application> userApplication = applicationService.getAllByUserId(userId);
+//        return ResponseEntity.ok(userApplication);
+//    }
 
     @PutMapping("/user/{userId}/job/{jobId}/status")
     public ResponseEntity<Application> updateApplication(@PathVariable Long userId, @PathVariable Long jobId, @RequestParam String status) {
