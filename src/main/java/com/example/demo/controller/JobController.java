@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 import com.example.demo.model.Job;
-import com.example.demo.service.JobService;
+import com.example.demo.model.LinkedInJob;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,5 +30,11 @@ public class JobController {
         return job.isPresent() ? ResponseEntity.ok(job.get()) : ResponseEntity.notFound().build();
     }
 
-
+    @GetMapping("/search")
+    public List<Map<String, String>> searchJobs(
+            @RequestParam String keyword,
+            @RequestParam String location
+    ) {
+        return jobService.searchJobs(keyword, location);
+    }
 }
