@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 import com.example.demo.model.Job;
-//import com.example.demo.model.LinkedInJob;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.model.Job;
 import com.example.demo.repository.JobRepository;
 import org.json.JSONArray;
