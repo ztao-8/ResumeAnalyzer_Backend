@@ -43,6 +43,7 @@ public class ApplicationService {
             Map<String, String> applicationInfo = new HashMap<>();
             jobService.getJobById(application.getJobId()).ifPresentOrElse(
                     job -> {
+                        applicationInfo.put("jobID", job.getId().toString());
                         applicationInfo.put("title", job.getTitle());
                         applicationInfo.put("company", job.getCompany());
                     },
