@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Application;
+import com.example.demo.model.Job;
 import com.example.demo.repository.ApplicationRepository;
 import com.example.demo.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,19 @@ public class ApplicationService {
     private JobService jobService;
 
     // Save an application
-    public Application saveApplication(Application application) {
+    public Application saveApplication(Map<String, Object> applicationJobData) {
+        String jobTitle = (String) applicationJobData.get("jobTitle");
+        String company = (String) applicationJobData.get("company");
+        String jobUrl = (String) applicationJobData.get("jobUrl");
+
+        Job job = new Job(jobTitle, company, jobUrl);
+        jobService.addJob(job);
+
+        Long userId = ((Number) applicationJobData.get("userId")).longValue();
+        String status = (String) applicationJobData.get("status");
+        Long jobId = job.getId();
+
+        Application application = new Application(jobId, userId, status);
         return applicationRepository.save(application);
     }
 
@@ -46,9 +59,6 @@ public class ApplicationService {
         }
         return result;
     }
-//    public List<Application> getAllByUserId(Long userId) {
-//        return applicationRepository.findByUserId(userId);
-//    }
 
     public Optional<Application> updateApplicationStatus(Long userId, Long jobId, String status) {
         Optional<Application> applicationOpt = applicationRepository.findByUserIdAndJobId(userId, jobId);
