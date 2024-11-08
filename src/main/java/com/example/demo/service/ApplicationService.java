@@ -18,9 +18,9 @@ public class ApplicationService {
 
     // Save an application
     public Application saveApplication(Map<String, Object> applicationJobData) {
-        String jobTitle = (String) applicationJobData.get("jobTitle");
+        String jobTitle = (String) applicationJobData.get("title");
         String company = (String) applicationJobData.get("company");
-        String jobUrl = (String) applicationJobData.get("jobUrl");
+        String jobUrl = (String) applicationJobData.get("url");
 
         Job job = new Job(jobTitle, company, jobUrl);
         jobService.addJob(job);
