@@ -50,9 +50,9 @@ public class JobService {
         // Step 2: Fetch job details for each job ID
         List<Map<String, String>> jobs = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Random random = new Random();
-            int randomIndex = random.nextInt(jobs.size());
-            int jobId = jobIds.get(randomIndex);
+            Random rand = new Random();
+            int rand_int = rand.nextInt(jobIds.size());
+            int jobId = jobIds.get(rand_int);
             Map<String, String> jobDetails = fetchJobDetails(jobId);
             if (jobDetails != null) {
                 jobs.add(jobDetails);
