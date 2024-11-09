@@ -9,10 +9,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class JobService {
@@ -53,7 +50,9 @@ public class JobService {
         // Step 2: Fetch job details for each job ID
         List<Map<String, String>> jobs = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            int jobId = jobIds.get(i);
+            Random random = new Random();
+            int randomIndex = random.nextInt(jobs.size());
+            int jobId = jobIds.get(randomIndex);
             Map<String, String> jobDetails = fetchJobDetails(jobId);
             if (jobDetails != null) {
                 jobs.add(jobDetails);
